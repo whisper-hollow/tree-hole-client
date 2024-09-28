@@ -21,9 +21,6 @@ sudo apt-get install portaudio19-dev python3-pyaudio
 python3 main.py
 ```
 
-## LINEBOT
-ID: @740jryrs
-
 ## 展示
 - https://www.youtube.com/watch?v=LUbgPd-3NSc
 
