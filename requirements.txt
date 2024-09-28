@@ -1,0 +1,6 @@
+simpleaudio
+line-bot-sdk
+python-dotenv
+pygame
+requests
+openai
