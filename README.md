@@ -7,6 +7,9 @@
   - 國立師範大學 - 科技 113 - 許慧儀
   - [數位孿生應用 : 跟自己對話 - 回憶殺](https://www.canva.com/design/DAF26lRORQo/75FnAs7g22F4bW2xTaxAdA/view?utm_content=DAF26lRORQo&utm_campaign=designshare&utm_medium=link&utm_source=editor#2)
 
+## 系統架構
+![系統架構](https://github.com/user-attachments/assets/6f75b0a7-1add-4fd1-bb0b-87afe24200f7)
+
 ## 安裝
 ```bash=
 sudo apt-get update
