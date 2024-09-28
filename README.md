@@ -25,8 +25,17 @@
 
 ## 安裝
 ```bash=
-sudo apt-get update
-sudo apt-get install portaudio19-dev python3-pyaudio
+# 創建環境
+python3 -v venv venv
+
+# 進入環境(window)
+.\venv\Scripts\activate
+
+# 進入環境(linux)
+source venv/bin/activate
+
+# 安裝套件
+pip3 install -r requirements.txt
 ```
 
 ## 執行
