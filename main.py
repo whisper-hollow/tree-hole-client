@@ -5,6 +5,7 @@ from audio.tts import convert_mandarin_to_tailo, create_tailo_voice_file
 import services.ai as ai_services
 import utils.media as media_utils
 import services.line as line_services
+from utils.env import update_env_from_google_sheet
 
 load_dotenv()
 
@@ -18,26 +19,28 @@ def main_process(line_service):
         line_service.send_text_to_line(f"我聽到的是：{text}")
 
         # OpenAI 聊天生成文字
-        message_content = ai_services.generate_text_from_prompt(client, text)
+        if (os.getenv("RAG_HINT") in text):
+            message_content = ai_services.rag(text)
+        else:
+            message_content = ai_services.generate_text_from_prompt(client, text)
         if message_content:
             print(message_content)
             line_service.send_text_to_line(message_content)
 
             # 語音合成（但不立即播放）
             tlpa = convert_mandarin_to_tailo(message_content)
-            gender = os.getenv("DEFAULT_GENDER")
-            accent = os.getenv("DEFAULT_ACCENT")
-            create_tailo_voice_file(tlpa, gender, accent)
+            create_tailo_voice_file(tlpa, os.getenv("DEFAULT_GENDER"), os.getenv("DEFAULT_ACCENT"))
 
-        # 使用 OpenAI API 生成圖片
-        image_url = ai_services.generate_image_from_text(client, "請以繪本的風格產生圖片，提示詞：" + text)
-        if image_url:
-            print(f"Generated image URL: {image_url}")
-            save_path = "output/generated_image.png"
-            media_utils.download_image(image_url, save_path)
+            # 使用 OpenAI API 生成圖片（基於對話生成的文字）
+            image_prompt = f"{message_content}，請使用{os.getenv('DRAW_STYLE')}風格生成圖片。"
+            image_url = ai_services.generate_image_from_text(client, image_prompt)
+            if image_url:
+                print(f"Generated image URL: {image_url}")
+                save_path = "output/generated_image.png"
+                media_utils.download_image(image_url, save_path)
 
-            # 發送圖片到 LINE
-            line_service.send_image_to_line(image_url)
+                # 發送圖片到 LINE
+                line_service.send_image_to_line(image_url)
 
         # 在生成圖片後播放 WAV 檔
         if message_content:
@@ -66,7 +69,8 @@ if __name__ == "__main__":
         prompt_message = "請按下 'Y' 開始，打開麥克風，說完後請關閉麥克風，或按任意其他鍵退出程序："
         print(prompt_message)
         line_service.send_text_to_line(prompt_message)
-        
+        update_env_from_google_sheet(os.getenv("GOOGLE_SHEET_KEY"), os.getenv("GOOGLE_SHEET_JSON"))
+
         try:
             user_input = input().strip().lower()
             if user_input != 'y':
@@ -80,5 +84,5 @@ if __name__ == "__main__":
             error_message = f"發生錯誤：{e}"
             print(error_message)
             line_service.send_text_to_line(error_message)
-        
+
         print("\n--- 處理完成，準備下一輪 ---\n")

@@ -5,3 +5,5 @@ pygame
 requests
 openai
 SpeechRecognition
+gspread
+oauth2client
