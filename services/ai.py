@@ -65,7 +65,7 @@ def rag(prompt):
       'Content-Type': 'application/json'
     }
 
-    response = requests.request("POST", os.getenv("URL_LLMTINS"), headers=headers, data=payload)
+    response = requests.request("POST", os.getenv("URL_LLMTWINS"), headers=headers, data=payload)
 
     # Convert response to JSON
     try:

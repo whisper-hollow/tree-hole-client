@@ -7,3 +7,4 @@ openai
 SpeechRecognition
 gspread
 oauth2client
+pyaudio
