@@ -88,8 +88,6 @@ LINE Bot 連線驗證資訊
   - 範例: `https://beta-llmtwins.4impact.cc/prompt`
 - `RAG_ROLE`: 角色設定
   - 範例: `AI 貓咪`
-- `RAG_HINT`: 觸發關鍵字
-  - 範例: `檸檬`
 
 ### 注意事項
 安全性提醒
