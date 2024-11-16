@@ -7,6 +7,11 @@ import json
 # 從環境變數獲取 API URL
 TAIGI_ASR_API_URL = os.getenv("TAIGI_ASR_API_URL", "https://speech.bronci.com.tw/ai/taigi/run/predict")
 
+def send_line_message(line_service, message):
+    """統一處理 LINE 訊息發送"""
+    if os.getenv("LINE_MESSAGE", "true").lower() == "true" and line_service:
+        line_service.send_text_to_line(message)
+
 # 台語語音轉文字的函式
 def recognize_taigi_speech(line_service):
     recognizer = sr.Recognizer()
@@ -15,8 +20,7 @@ def recognize_taigi_speech(line_service):
     with sr.Microphone() as source:
         message = "請說，我在聽呢！台語嘛ㄟ通！"
         print(message)
-        if line_service:
-            line_service.send_text_to_line(message)
+        send_line_message(line_service, message)
         audio = recognizer.listen(source)
 
     # 將音頻轉換為 WAV 格式並取得 bytes
@@ -51,6 +55,5 @@ def recognize_taigi_speech(line_service):
     else:
         message = f"台語語音轉文字失敗: {response.status_code}"
         print(message)
-        if line_service:
-            line_service.send_text_to_line(message)
+        send_line_message(line_service, message)
         return None
