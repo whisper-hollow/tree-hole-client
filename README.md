@@ -85,9 +85,7 @@ LINE Bot 連線驗證資訊
 ### RAG 設定
 知識庫連接設定
 - `URL_LLMTWINS`: 服務端點
-  - 範例: `https://beta-llmtwins.4impact.cc/prompt`
 - `RAG_ROLE`: 角色設定
-  - 範例: `AI 貓咪`
 
 ### 注意事項
 安全性提醒
